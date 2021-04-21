@@ -1,4 +1,4 @@
-const { User, Product } = require('../models');
+const { User } = require('../models');
 const UploadFileCloudinary = require('../controllers/upload-coudinary.controller');
 //const UploadFileOnServer = require('../controllers/upload-server.controller')
 const extensionsImgs = ['png', 'jpg', 'jpge', 'gif'];
@@ -32,24 +32,9 @@ const uploadImgUser = async (req, res) => {
         res.status(500).json({ message: 'Error saving file'})
     }
 };
-const uploadImgProduct = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const fileName = await uploader.saveFile(req.files.file, extensionsImgs);
-        let product = await Product.findById(id);
-        await uploader.deleteFile(product.img);
-        product.img = fileName;
-        
-        await product.updateOne({img:fileName});
-        res.status(201).json({ data: product})
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error saving file'})
-    }
-}; 
+ 
 
 module.exports = {
     loadGetFile,
-    uploadImgUser,
-    uploadImgProduct
+    uploadImgUser
 };
